@@ -2,9 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <stdbool.h>
 
 //Display ATM Menu
-void displayMenu () {
+void displayMenu (bool isFirst) {
+    if(!isFirst){
+        printf("\n");
+    }
     printf("------Welcome to Bangla Bank------");
     printf("\n0. Cancel operation");
     printf("\n1. Register new account");
@@ -14,12 +18,16 @@ void displayMenu () {
     printf("\n5. Forgot Password");
     printf("\n6. Block Card");
     printf("\n7. Request Disable ATM Card");
+    if(!isFirst){
+        printf("\n");
+    }
 }
 
 struct Account {
     char name[256], phone[256], address[500];
     int nidNumber, cardNumber, accountNumber, cardPin;
     double balance;
+    bool data;
 };
 
 //generate account number
@@ -35,9 +43,18 @@ void registerNewAccount(){
 }
 
 //Balance query
-void balanceQuery(){
-    printf("Balance query\n");
+void balanceQuery(struct Account *acc) {
+    printf("Enter PIN: ");
+    int pin;
+    scanf("%d", &pin);
+
+    if (pin == acc->cardPin) {
+        printf("Balance is %lf\n", acc->balance);
+    } else {
+        printf("Incorrect PIN\n");
+    }
 }
+
 //Deposit cash
 void depositCash(){
     printf("Deposit cash\n");
@@ -63,7 +80,7 @@ void requestDisableATMCard(){
 };
 
 int main(){
-    displayMenu();
+    displayMenu(true);
     int selectMenu;
     char name[256];
     srand(time(NULL));
@@ -128,7 +145,7 @@ int main(){
                     break;
                 }
             case 2:
-                balanceQuery();
+                balanceQuery(&account1);
                 break;
             case 3:
                 depositCash();
@@ -149,5 +166,6 @@ int main(){
                 printf("Operation canceled! Collect your card! \n");
                 break;
         }
+        displayMenu(false);
     } while (selectMenu != 0);
 }
