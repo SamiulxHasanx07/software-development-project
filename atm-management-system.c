@@ -25,6 +25,23 @@ void displayMenu (bool isFirst) {
 }
 
 //Display Card Operations Menu
+void displayCardOperationsMenu (bool isFirst, char name[256]) {
+    if(!isFirst){
+        printf("\n");
+    }
+    printf("------ Hi, %s ------\n", name);
+    printf("\n0. Cancel transaction");
+    printf("\n1. Balance Query");
+    printf("\n2. Balance Withdraw");
+    printf("\n3. Transfer Balance");
+    printf("\n4. Transaction History");
+    printf("\n5. Reset PIN");
+    printf("\n6. Disable Account");
+    printf("\n");
+    if(!isFirst){
+        printf("\n");
+    }
+}
 
 struct Account {
     char name[256], phone[256], address[500];
@@ -44,37 +61,38 @@ void generateRandomNumber(char *number, size_t length) {
 void registerNewAccount(){
 }
 
-void insertCard(struct Account *accountsArr, int totalAccounts){
+void insertCard(struct Account *accountsArr, int totalAccounts, bool *isCardInserted, int *insertedCard){
     if(totalAccounts == 0){
         printf("There is no account records available, Please Register account first");
     }else{
         printf("Enter card number: ");
         int providedCardNumber;
-        scanf("%d\n", providedCardNumber);
-        int isCardFound = false;
+        scanf("%d", &providedCardNumber);
+
+        //authenticate card number and pin
         for(int i=0; i<totalAccounts; i++){
             if(accountsArr[i].cardNumber == providedCardNumber){
-                printf("Card Found %d", providedCardNumber);
-                isCardFound = 1;
+                printf("Enter PIN Number: ");
+                int providedPin;
+                scanf("%d", &providedPin);
+                *isCardInserted = true;
+                *insertedCard = accountsArr[i].cardNumber;
                 break;
             }
-        }
-        if(isCardFound){
-            printf("Card is not found");
         }
     }
 }
 
-//Balance query
-void balanceQuery(struct Account *acc) {
-    printf("Enter PIN: ");
-    int pin;
-    scanf("%d", &pin);
+int loggedinId (int id){
+    return id;
+}
 
-    if (pin == acc->cardPin) {
-        printf("Balance is %lf\n", acc->balance);
-    } else {
-        printf("Incorrect PIN\n");
+//Balance query
+void balanceQuery(struct Account *accountsArr, int totalAccounts, int insertedCard) {
+    for(int i = 0; i<totalAccounts; i++){
+        if(accountsArr[i].cardNumber == insertedCard ){
+            printf("Current Balance is: %.2fTK\n", accountsArr[i].balance);
+        }
     }
 }
 
@@ -134,6 +152,9 @@ int main(){
 
     struct Account *accounts = NULL;
     int currentAccount = 0;
+
+    bool isCardInserted = false;
+    int insertedCard = 0;
 
     do {
         printf("\nSelect menu: ");
@@ -209,7 +230,36 @@ int main(){
                     break;
                 }
             case 2:
-                insertCard(accounts, currentAccount);
+                insertCard(accounts, currentAccount, &isCardInserted, &insertedCard);
+                do{
+                    displayCardOperationsMenu(true, "Samiul");
+                    int cardOperation;
+                    printf("\nSelect transaction menu: ");
+                    scanf("%d", &cardOperation);
+                    switch (cardOperation){
+                        case 0:
+                            printf("Collect your card! Thanks for being with us!");
+                            exit(0);
+                            break;
+                        case 1:
+                            balanceQuery(accounts, currentAccount, insertedCard);
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            break;
+                        case 5:
+                            break;
+                        case 6:
+                            break;
+                        default:
+                            printf("Menu dosen't exists! Please select correct menu!! \n");
+                            break;
+                    }
+                    displayCardOperationsMenu(true, "Samiul");
+                }while(true);
                 break;
             case 3:
                 depositWithBankAccount();
@@ -236,6 +286,7 @@ int main(){
                 strcpy(accounts[currentAccount].address, "Rajshahi, Bangladesh");;
                 accounts[currentAccount].nidNumber = 330434242;
                 accounts[currentAccount].cardPin = 1234;
+                accounts[currentAccount].balance = 50000;
 
                 //print seed data
 
@@ -243,6 +294,7 @@ int main(){
                 printf("Name: %s\n", accounts[currentAccount].name);
                 printf("Card Number: %d\n", accounts[currentAccount].cardNumber);
                 printf("Account Number: %d\n", accounts[currentAccount].accountNumber);
+                printf("Account Number: %d\n", accounts[currentAccount].balance);
                 printf("Phone: %s\n", accounts[currentAccount].phone);
                 printf("Address: %s\n", accounts[currentAccount].address);
                 printf("NID Number: %d\n", accounts[currentAccount].nidNumber);
