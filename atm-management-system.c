@@ -13,9 +13,10 @@ void displayMenu (bool isFirst) {
     printf("\n0. Cancel operation");
     printf("\n1. Register new account");
     printf("\n2. Insert Card");
-    printf("\n3. Reset PIN");
-    printf("\n4. Block Card");
-    printf("\n5. Admin/Author Login");
+    printf("\n3. Deposit money with bank account");
+    printf("\n4. Reset PIN");
+    printf("\n5. Block Card");
+    printf("\n6. Admin/Author Login");
     printf("\n");
     if(!isFirst){
         printf("\n");
@@ -59,9 +60,10 @@ void balanceQuery(struct Account *acc) {
 }
 
 //Deposit cash
-void depositCash(){
-    printf("Deposit cash\n");
+void depositWithBankAccount(){
+    printf("Deposit cash with bank account\n");
 }
+
 //Withdraw balance
 void withdrawBalance(){
     printf("Withdraw balance\n");
@@ -87,6 +89,7 @@ void adminLogin(){
     printf("Admin login\n");
 };
 
+//exit program
 void exitProgram(){
     printf("Are you sure want to exit program?(Y/N): ");
     char confirmation[2];
@@ -190,12 +193,15 @@ int main(){
                 insertCard();
                 break;
             case 3:
-                resetPin();
+                depositWithBankAccount();
                 break;
             case 4:
-                blockCard();
+                resetPin();
                 break;
             case 5:
+                blockCard();
+                break;
+            case 6:
                 adminLogin();
                 break;
             default:
