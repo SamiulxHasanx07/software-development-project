@@ -61,7 +61,7 @@ void generateRandomNumber(char *number, size_t length) {
 void registerNewAccount(){
 }
 
-void insertCard(struct Account *accountsArr, int totalAccounts, bool *isCardInserted, int *insertedCard){
+void insertCard(struct Account *accountsArr, int totalAccounts, bool *isCardInserted, int *insertedCard, char *userName){
     if(totalAccounts == 0){
         printf("There is no account records available, Please Register account first");
     }else{
@@ -77,6 +77,7 @@ void insertCard(struct Account *accountsArr, int totalAccounts, bool *isCardInse
                 scanf("%d", &providedPin);
                 *isCardInserted = true;
                 *insertedCard = accountsArr[i].cardNumber;
+                strcpy(userName, accountsArr[i].name);
                 break;
             }
         }
@@ -91,7 +92,8 @@ int loggedinId (int id){
 void balanceQuery(struct Account *accountsArr, int totalAccounts, int insertedCard) {
     for(int i = 0; i<totalAccounts; i++){
         if(accountsArr[i].cardNumber == insertedCard ){
-            printf("Current Balance is: %.2fTK\n", accountsArr[i].balance);
+            printf("Current Balance is: %.2f Taka\n", accountsArr[i].balance);
+            break;
         }
     }
 }
@@ -102,8 +104,26 @@ void depositWithBankAccount(){
 }
 
 //Withdraw balance
-void withdrawBalance(){
-    printf("Withdraw balance\n");
+void withdrawBalance(struct Account *accountsArr, int totalAccounts, int insertedCard){
+    printf("Enter withdraw amount: ");
+    int withdrawAmount=0;
+    scanf("%d", &withdrawAmount);
+    if(withdrawAmount % 500==0){
+        printf("Perfect go");
+    }
+    for(int i = 0; i<totalAccounts; i++){
+        if(accountsArr[i].cardNumber == insertedCard ){
+            if(accountsArr[i].balance>1000){
+                double newBalance = accountsArr[i].balance - withdrawAmount;
+                accountsArr[i].balance = newBalance;
+                printf("Transaction successful!\n");
+                printf("Your new balance is: %2lf taka", newBalance);
+            }else{
+                printf("Insufficient Balance, Current Balance is: %2lf taka\n\n", accountsArr[i].balance);
+            }
+            break;
+        }
+    }
 }
 
 //Transfer Balance
@@ -165,6 +185,7 @@ int main(){
 
     bool isCardInserted = false;
     int insertedCard = 0;
+    char userName[256];
 
     do {
         printf("\nSelect menu: ");
@@ -221,6 +242,7 @@ int main(){
                 if (tk >= 500) {
                     printf("\nEnter card PIN number: ");
                     scanf("%d", &accounts[currentAccount].cardPin);
+                    printf("\n");
 
                     //Registerd account display
                     printf("Account registered!!\n");
@@ -230,7 +252,7 @@ int main(){
                     printf("NID Number: %d\n", accounts[currentAccount].nidNumber);
                     printf("Card Number: %d\n", accounts[currentAccount].cardNumber);
                     printf("Account Number: %d\n", accounts[currentAccount].accountNumber);
-                    printf("Balance: %lf\n", accounts[currentAccount].balance);
+                    printf("Balance: %2lf\n", accounts[currentAccount].balance);
 
                     //this line is for update current total account number
                     currentAccount++;
@@ -240,9 +262,9 @@ int main(){
                     break;
                 }
             case 2:
-                insertCard(accounts, currentAccount, &isCardInserted, &insertedCard);
+                insertCard(accounts, currentAccount, &isCardInserted, &insertedCard, &userName);
                 do{
-                    displayCardOperationsMenu(true, "Samiul");
+                    displayCardOperationsMenu(true, userName);
                     int cardOperation;
                     printf("\nSelect transaction menu: ");
                     scanf("%d", &cardOperation);
@@ -255,7 +277,7 @@ int main(){
                             balanceQuery(accounts, currentAccount, insertedCard);
                             break;
                         case 2:
-                            withdrawBalance();
+                            withdrawBalance(accounts, currentAccount, insertedCard);
                             break;
                         case 3:
                             transferBalance();
@@ -273,7 +295,9 @@ int main(){
                             printf("Menu dosen't exists! Please select correct menu!! \n");
                             break;
                     }
-                    displayCardOperationsMenu(true, "Samiul");
+                    if(cardOperation !=0){
+                        displayCardOperationsMenu(false, userName);
+                    }
                 }while(true);
                 break;
             case 3:
