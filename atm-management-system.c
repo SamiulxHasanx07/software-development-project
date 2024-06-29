@@ -12,13 +12,10 @@ void displayMenu (bool isFirst) {
     printf("------Welcome to Bangla Bank------\n");
     printf("\n0. Cancel operation");
     printf("\n1. Register new account");
-    printf("\n2. Balance query");
-    printf("\n3. Deposit Cash");
-    printf("\n4. Withdraw Balance");
-    printf("\n5. Forgot Password");
-    printf("\n6. Block Card");
-    printf("\n7. Request Disable ATM Card");
-    printf("\n8. Admin/Author Login");
+    printf("\n2. Insert Card");
+    printf("\n4. Reset PIN");
+    printf("\n5. Block Card");
+    printf("\n6. Admin/Author Login");
     printf("\n");
     if(!isFirst){
         printf("\n");
@@ -67,8 +64,8 @@ void withdrawBalance(){
 }
 
 //Forgot password
-void forgotPassword(){
-    printf("Forgot password\n");
+void resetPin(){
+    printf("Forgot PIN Number\n");
 };
 
 //Block card
@@ -90,6 +87,7 @@ void exitProgram(){
         printf("Program exited!! Thanks for being with us!!\n");
         exit(0);
     } else if(strcmp(confirmation, "N") == 0 || strcmp(confirmation, "n") == 0){
+        displayMenu(false);
         return;
     } else {
         printf("Invalid input! Returning to menu.\n");
@@ -181,9 +179,7 @@ int main(){
                 }
             case 2:
                 //update this function for multiple user update here
-
-                //update this function
-                //balanceQuery(&account1);
+                resetPin();
                 break;
             case 3:
                 depositCash();
@@ -192,7 +188,6 @@ int main(){
                 withdrawBalance();
                 break;
             case 5:
-                forgotPassword();
                 break;
             case 6:
                 blockCard();
