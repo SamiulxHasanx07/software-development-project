@@ -13,9 +13,9 @@ void displayMenu (bool isFirst) {
     printf("\n0. Cancel operation");
     printf("\n1. Register new account");
     printf("\n2. Insert Card");
-    printf("\n4. Reset PIN");
-    printf("\n5. Block Card");
-    printf("\n6. Admin/Author Login");
+    printf("\n3. Reset PIN");
+    printf("\n4. Block Card");
+    printf("\n5. Admin/Author Login");
     printf("\n");
     if(!isFirst){
         printf("\n");
@@ -39,6 +39,10 @@ void generateRandomNumber(char *number, size_t length) {
 
 //Register new account
 void registerNewAccount(){
+}
+
+void insertCard(){
+    printf("Card Inseted");
 }
 
 //Balance query
@@ -76,6 +80,11 @@ void blockCard(){
 //Card disable request
 void requestDisableATMCard(){
     printf("Request disable atm card\n");
+};
+
+//Admin login
+void adminLogin(){
+    printf("Admin login\n");
 };
 
 void exitProgram(){
@@ -178,22 +187,16 @@ int main(){
                     break;
                 }
             case 2:
-                //update this function for multiple user update here
-                resetPin();
+                insertCard();
                 break;
             case 3:
-                depositCash();
+                resetPin();
                 break;
             case 4:
-                withdrawBalance();
-                break;
-            case 5:
-                break;
-            case 6:
                 blockCard();
                 break;
-            case 7:
-                requestDisableATMCard();
+            case 5:
+                adminLogin();
                 break;
             default:
                 printf("Menu dosen't exists! Please select correct menu!! \n");
