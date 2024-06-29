@@ -81,6 +81,22 @@ void requestDisableATMCard(){
     printf("Request disable atm card\n");
 };
 
+void exitProgram(){
+    printf("Are you sure want to exit program?(Y/N): ");
+    char confirmation[2];
+    scanf("%s", confirmation);
+
+    if(strcmp(confirmation, "Y") == 0 || strcmp(confirmation, "y") == 0){
+        printf("Program exited!! Thanks for being with us!!\n");
+        exit(0);
+    } else if(strcmp(confirmation, "N") == 0 || strcmp(confirmation, "n") == 0){
+        return;
+    } else {
+        printf("Invalid input! Returning to menu.\n");
+        return;
+    }
+}
+
 int main(){
     displayMenu(true);
     int selectMenu;
@@ -96,19 +112,8 @@ int main(){
 
         switch(selectMenu){
             case 0:
-                printf("Are you sure want to exit program?(Y/N): ");
-                char confirmation[2];
-                scanf("%s", confirmation);
-
-                if(strcmp(confirmation, "Y") == 0 || strcmp(confirmation, "y") == 0){
-                    printf("Program exited!! Thanks for being with us!!\n");
-                    exit(0);
-                } else if(strcmp(confirmation, "N") == 0 || strcmp(confirmation, "n") == 0){
-                    break;
-                } else {
-                    printf("Invalid input! Returning to menu.\n");
-                    break;
-                }
+                exitProgram();
+                break;
             case 1:
                 accounts = realloc(accounts, (currentAccount + 1) * sizeof(struct Account));
                 accounts[currentAccount].accountNumber = rand() % 90000000 + 10000000;
