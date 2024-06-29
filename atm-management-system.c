@@ -9,7 +9,7 @@ void displayMenu (bool isFirst) {
     if(!isFirst){
         printf("\n");
     }
-    printf("------Welcome to Bangla Bank------");
+    printf("------Welcome to Bangla Bank------\n");
     printf("\n0. Cancel operation");
     printf("\n1. Register new account");
     printf("\n2. Balance query");
@@ -18,6 +18,8 @@ void displayMenu (bool isFirst) {
     printf("\n5. Forgot Password");
     printf("\n6. Block Card");
     printf("\n7. Request Disable ATM Card");
+    printf("\n8. Admin/Author Login");
+    printf("\n");
     if(!isFirst){
         printf("\n");
     }
@@ -85,28 +87,48 @@ int main(){
     char name[256];
     srand(time(NULL));
 
-    struct Account account1, account2;
+    struct Account *accounts = NULL;
+    int currentAccount = 0;
 
     do {
         printf("\nSelect menu: ");
         scanf("%d", &selectMenu);
 
         switch(selectMenu){
+            case 0:
+                printf("Are you sure want to exit program?(Y/N): ");
+                char confirmation[2];
+                scanf("%s", confirmation);
+
+                if(strcmp(confirmation, "Y") == 0 || strcmp(confirmation, "y") == 0){
+                    printf("Program exited!! Thanks for being with us!!\n");
+                    exit(0);
+                } else if(strcmp(confirmation, "N") == 0 || strcmp(confirmation, "n") == 0){
+                    break;
+                } else {
+                    printf("Invalid input! Returning to menu.\n");
+                    break;
+                }
             case 1:
-                account1.accountNumber = rand() % 90000000 + 10000000;
-                account1.cardNumber = rand() % 9000000 + 1000000;
+                accounts = realloc(accounts, (currentAccount + 1) * sizeof(struct Account));
+                accounts[currentAccount].accountNumber = rand() % 90000000 + 10000000;
+                accounts[currentAccount].cardNumber = rand() % 9000000 + 1000000;
+
+                //old code for backup [manually added data]
+                //account1.accountNumber = rand() % 90000000 + 10000000;
+                //account1.cardNumber = rand() % 9000000 + 1000000;
 
                 printf("\nEnter your name: ");
-                scanf("%s", account1.name);
+                scanf("%s", accounts[currentAccount].name);
 
                 printf("\nEnter phone number: ");
-                scanf("%s", account1.phone);
+                scanf("%s", accounts[currentAccount].phone);
 
                 printf("\nEnter address: ");
-                scanf("%s", account1.address);
+                scanf("%s", accounts[currentAccount].address);
 
                 printf("\nEnter NID number: ");
-                scanf("%d", &account1.nidNumber);
+                scanf("%d", &accounts[currentAccount].nidNumber);
 
                 double tk;
                 int attempts = 0;
@@ -116,7 +138,7 @@ int main(){
                     printf("\nEnter account opening minimum deposit 500tk: ");
                     scanf("%lf", &tk);
                     if(tk == 500 || tk >= 500) {
-                        account1.balance = tk;
+                        accounts[currentAccount].balance = tk;
                         break;
                     } else {
                         attempts++;
@@ -131,21 +153,32 @@ int main(){
 
                 if (tk >= 500) {
                     printf("\nEnter card PIN number: ");
-                    scanf("%d", &account1.cardPin);
+                    scanf("%d", &accounts[currentAccount].cardPin);
+
+                    //Registerd account display
                     printf("Account registered!!\n");
-                    printf("Name: %s\n", account1.name);
-                    printf("Phone: %s\n", account1.phone);
-                    printf("Address: %s\n", account1.address);
-                    printf("NID Number: %d\n", account1.nidNumber);
-                    printf("Card Number: %d\n", account1.cardNumber);
-                    printf("Account Number: %d\n", account1.accountNumber);
-                    printf("Balance: %lf\n", account1.balance);
+                    printf("Name: %s\n", accounts[currentAccount].name);
+                    printf("Phone: %s\n", accounts[currentAccount].phone);
+                    printf("Address: %s\n", accounts[currentAccount].address);
+                    printf("NID Number: %d\n", accounts[currentAccount].nidNumber);
+                    printf("Card Number: %d\n", accounts[currentAccount].cardNumber);
+                    printf("Account Number: %d\n", accounts[currentAccount].accountNumber);
+                    printf("Balance: %lf\n", accounts[currentAccount].balance);
+
+                    //this line is for update current total account number
+                    currentAccount++;
+
+                    //this line for free memory allocation
+                    free(accounts);
                     break;
                 }else{
                     break;
                 }
             case 2:
-                balanceQuery(&account1);
+                //update this function for multiple user update here
+
+                //update this function
+                //balanceQuery(&account1);
                 break;
             case 3:
                 depositCash();
@@ -163,9 +196,11 @@ int main(){
                 requestDisableATMCard();
                 break;
             default:
-                printf("Operation canceled! Collect your card! \n");
+                printf("Menu dosen't exists! Please select correct menu!! \n");
                 break;
         }
-        displayMenu(false);
-    } while (selectMenu != 0);
+        if(selectMenu != 0) {
+            displayMenu(false);
+        }
+    } while (true);
 }
