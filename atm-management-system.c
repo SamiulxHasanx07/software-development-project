@@ -106,6 +106,16 @@ void withdrawBalance(){
     printf("Withdraw balance\n");
 }
 
+//Transfer Balance
+void transferBalance(){
+    printf("Transfer balance\n");
+}
+
+//Transaction History
+void transactionHistory(){
+    printf("Transaction history\n");
+}
+
 //Forgot password
 void resetPin(){
     printf("Forgot PIN Number\n");
@@ -245,14 +255,19 @@ int main(){
                             balanceQuery(accounts, currentAccount, insertedCard);
                             break;
                         case 2:
+                            withdrawBalance();
                             break;
                         case 3:
+                            transferBalance();
                             break;
                         case 4:
+                            transactionHistory();
                             break;
                         case 5:
+                            resetPin();
                             break;
                         case 6:
+                            requestDisableATMCard();
                             break;
                         default:
                             printf("Menu dosen't exists! Please select correct menu!! \n");
