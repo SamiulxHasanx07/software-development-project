@@ -105,19 +105,24 @@ void depositWithBankAccount(){
 
 //Withdraw balance
 void withdrawBalance(struct Account *accountsArr, int totalAccounts, int insertedCard){
+    int withdrawAmount;
     printf("Enter withdraw amount: ");
-    int withdrawAmount=0;
     scanf("%d", &withdrawAmount);
-    if(withdrawAmount % 500==0){
-        printf("Perfect go");
+
+    if(withdrawAmount % 500 != 0){
+        do{
+            printf("Invaid amount, mount should be 500*NumberOfNot or 1000*NumberOfNote: ");
+            scanf("%d", &withdrawAmount);
+        }while(withdrawAmount % 500 != 0);
     }
+
     for(int i = 0; i<totalAccounts; i++){
         if(accountsArr[i].cardNumber == insertedCard ){
             if(accountsArr[i].balance>1000){
                 double newBalance = accountsArr[i].balance - withdrawAmount;
                 accountsArr[i].balance = newBalance;
                 printf("Transaction successful!\n");
-                printf("Your new balance is: %2lf taka", newBalance);
+                printf("Your new balance is: %2lf taka\n", newBalance);
             }else{
                 printf("Insufficient Balance, Current Balance is: %2lf taka\n\n", accountsArr[i].balance);
             }
@@ -294,9 +299,6 @@ int main(){
                         default:
                             printf("Menu dosen't exists! Please select correct menu!! \n");
                             break;
-                    }
-                    if(cardOperation !=0){
-                        displayCardOperationsMenu(false, userName);
                     }
                 }while(true);
                 break;
