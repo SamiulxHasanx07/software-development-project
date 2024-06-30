@@ -63,7 +63,7 @@ void registerNewAccount(){
 
 void insertCard(struct Account *accountsArr, int totalAccounts, bool *isCardInserted, int *insertedCard, char *userName){
     if(totalAccounts == 0){
-        printf("There is no account records available, Please Register account first");
+        printf("There is no account records available, Please Register account first\n");
     }else{
         printf("Enter card number: ");
         int providedCardNumber;
@@ -75,10 +75,33 @@ void insertCard(struct Account *accountsArr, int totalAccounts, bool *isCardInse
                 printf("Enter PIN Number: ");
                 int providedPin;
                 scanf("%d", &providedPin);
-                *isCardInserted = true;
-                *insertedCard = accountsArr[i].cardNumber;
-                strcpy(userName, accountsArr[i].name);
+                if(providedPin==accountsArr[i].cardPin){
+                    *isCardInserted = true;
+                    *insertedCard = accountsArr[i].cardNumber;
+                    strcpy(userName, accountsArr[i].name);
+                }else{
+                    printf("Incorrect PIN number.\n");
+                    int insertAttempt=1;
+                    do{
+                        printf("Enter PIN Number, you have %d attempt remaining: ", 3-insertAttempt);
+                        scanf("%d", &providedPin);
+                        if(providedPin==accountsArr[i].cardPin){
+                            *isCardInserted = true;
+                            *insertedCard = accountsArr[i].cardNumber;
+                            strcpy(userName, accountsArr[i].name);
+                            break;
+                        }else{
+                            if(insertAttempt == 3){
+                                printf("Your card is blocked!! To unblock visit our bank or call us\n");
+                            }
+                        }
+                        insertAttempt ++;
+                    }while(insertAttempt < 3);
+
+                }
                 break;
+            }else{
+              printf("Enter valid card number!! Your provided card number is not authorized to our bank!\n");
             }
         }
     }
@@ -268,40 +291,44 @@ int main(){
                 }
             case 2:
                 insertCard(accounts, currentAccount, &isCardInserted, &insertedCard, &userName);
-                do{
-                    displayCardOperationsMenu(true, userName);
-                    int cardOperation;
-                    printf("\nSelect transaction menu: ");
-                    scanf("%d", &cardOperation);
-                    switch (cardOperation){
-                        case 0:
-                            printf("Collect your card! Thanks for being with us!");
-                            exit(0);
-                            break;
-                        case 1:
-                            balanceQuery(accounts, currentAccount, insertedCard);
-                            break;
-                        case 2:
-                            withdrawBalance(accounts, currentAccount, insertedCard);
-                            break;
-                        case 3:
-                            transferBalance();
-                            break;
-                        case 4:
-                            transactionHistory();
-                            break;
-                        case 5:
-                            resetPin();
-                            break;
-                        case 6:
-                            requestDisableATMCard();
-                            break;
-                        default:
-                            printf("Menu dosen't exists! Please select correct menu!! \n");
-                            break;
-                    }
-                }while(true);
-                break;
+                if(isCardInserted){
+                    do{
+                        displayCardOperationsMenu(true, userName);
+                        int cardOperation;
+                        printf("\nSelect transaction menu: ");
+                        scanf("%d", &cardOperation);
+                        switch (cardOperation){
+                            case 0:
+                                printf("Collect your card! Thanks for being with us!");
+                                exit(0);
+                                break;
+                            case 1:
+                                balanceQuery(accounts, currentAccount, insertedCard);
+                                break;
+                            case 2:
+                                withdrawBalance(accounts, currentAccount, insertedCard);
+                                break;
+                            case 3:
+                                transferBalance();
+                                break;
+                            case 4:
+                                transactionHistory();
+                                break;
+                            case 5:
+                                resetPin();
+                                break;
+                            case 6:
+                                requestDisableATMCard();
+                                break;
+                            default:
+                                printf("Menu dosen't exists! Please select correct menu!! \n");
+                                break;
+                        }
+                    }while(true);
+                }else{
+                    printf("Card is not inserted!! Something went wrong!!\n");
+                    break;
+                }
             case 3:
                 depositWithBankAccount();
                 break;
@@ -321,7 +348,8 @@ int main(){
                 //8 digit account number generate
                 accounts[currentAccount].accountNumber = rand() % 90000000 + 10000000;
                 //7 digit account number generate
-                accounts[currentAccount].cardNumber = rand() % 9000000 + 1000000;
+                accounts[currentAccount].cardNumber = 1234567;
+                //rand() % 9000000 + 1000000;
                 strcpy(accounts[currentAccount].name, "Samiul");
                 strcpy(accounts[currentAccount].phone, "01788058690");
                 strcpy(accounts[currentAccount].address, "Rajshahi, Bangladesh");;
