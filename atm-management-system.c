@@ -69,7 +69,7 @@ void insertCard(struct Account *accountsArr, int totalAccounts, bool *isCardInse
         int providedCardNumber;
         scanf("%d", &providedCardNumber);
 
-        //authenticate card number and pin
+        //authenticate card number and pin check
         for(int i=0; i<totalAccounts; i++){
             if(accountsArr[i].cardNumber == providedCardNumber){
                 printf("Enter PIN Number: ");
@@ -90,12 +90,12 @@ void insertCard(struct Account *accountsArr, int totalAccounts, bool *isCardInse
                             *insertedCard = accountsArr[i].cardNumber;
                             strcpy(userName, accountsArr[i].name);
                             break;
-                        }else{
-                            if(insertAttempt == 3){
-                                printf("Your card is blocked!! To unblock visit our bank or call us\n");
-                            }
                         }
+
                         insertAttempt ++;
+                        if(insertAttempt == 3){
+                            printf("Your card is blocked!! To unblock visit our bank or call us\n");
+                        }
                     }while(insertAttempt < 3);
 
                 }
@@ -134,7 +134,7 @@ void withdrawBalance(struct Account *accountsArr, int totalAccounts, int inserte
 
     if(withdrawAmount % 500 != 0){
         do{
-            printf("Invaid amount, mount should be 500*NumberOfNot or 1000*NumberOfNote: ");
+            printf("Invalid amount, mount should be 500*NumberOfNot or 1000*NumberOfNote: \n");
             scanf("%d", &withdrawAmount);
         }while(withdrawAmount % 500 != 0);
     }
@@ -144,8 +144,8 @@ void withdrawBalance(struct Account *accountsArr, int totalAccounts, int inserte
             if(accountsArr[i].balance>1000){
                 double newBalance = accountsArr[i].balance - withdrawAmount;
                 accountsArr[i].balance = newBalance;
-                printf("Transaction successful!\n");
-                printf("Your new balance is: %2lf taka\n", newBalance);
+                printf("\nTransaction successful!\n");
+                printf("Your new balance is: %2lf taka\n\n\n", newBalance);
             }else{
                 printf("Insufficient Balance, Current Balance is: %2lf taka\n\n", accountsArr[i].balance);
             }
