@@ -397,7 +397,7 @@ int main(){
                 printf("Name: %s\n", accounts[currentAccount].name);
                 printf("Card Number: %d\n", accounts[currentAccount].cardNumber);
                 printf("Account Number: %d\n", accounts[currentAccount].accountNumber);
-                printf("Account Number: %d\n", accounts[currentAccount].balance);
+                printf("Account Balance: %.2lf\n", accounts[currentAccount].balance);
                 printf("Phone: %s\n", accounts[currentAccount].phone);
                 printf("Address: %s\n", accounts[currentAccount].address);
                 printf("NID Number: %d\n", accounts[currentAccount].nidNumber);
