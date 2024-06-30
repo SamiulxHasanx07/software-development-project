@@ -33,10 +33,11 @@ void displayCardOperationsMenu (bool isFirst, char name[256]) {
     printf("\n0. Cancel transaction");
     printf("\n1. Balance Query");
     printf("\n2. Balance Withdraw");
-    printf("\n3. Transfer Balance");
-    printf("\n4. Transaction History");
-    printf("\n5. Reset PIN");
-    printf("\n6. Disable Account");
+    printf("\n3. Add money");
+    printf("\n4. Transfer Balance");
+    printf("\n5. Transaction History");
+    printf("\n6. Reset PIN");
+    printf("\n7. Disable Account");
     printf("\n");
     if(!isFirst){
         printf("\n");
@@ -122,8 +123,38 @@ void balanceQuery(struct Account *accountsArr, int totalAccounts, int insertedCa
 }
 
 //Deposit cash
-void depositWithBankAccount(){
-    printf("Deposit cash with bank account\n");
+void dipositMoney(struct Account *accountsArr, int totalAccounts,bool isCardInserted, int insertedCard ){
+    if(!isCardInserted){
+        int getAccount;
+        printf("Enter bank account number: ");
+        scanf("%d", &getAccount);
+        bool isAccountExists = false;
+        for(int i = 0; i < totalAccounts; i++){
+            if(accountsArr[i].accountNumber == getAccount){
+                isAccountExists = true;
+                double getAmount;
+                printf("Enter amount to deposit: ");
+                scanf("%lf", &getAmount);
+                if(getAmount >= 500){
+                    accountsArr[i].balance += getAmount;
+                    printf("%.2lf Taka added successfully!!\n", getAmount);
+                    printf("New balance is %.2lf taka.!!\n", accountsArr[i].balance);
+
+                }else{
+                  printf("Minimum deposit 500tk, try again!!\n");
+                }
+                break;
+            }
+        }
+        if(!isAccountExists){
+          printf("Account not exists!! try again thanks!! \n");
+        }
+    }
+
+    //deposit with card number
+    if(isCardInserted){
+        printf("Card is inserted!!!");
+    }
 }
 
 //Withdraw balance
@@ -309,15 +340,18 @@ int main(){
                                 withdrawBalance(accounts, currentAccount, insertedCard);
                                 break;
                             case 3:
-                                transferBalance();
+                                dipositMoney(accounts, currentAccount, isCardInserted, insertedCard);
                                 break;
                             case 4:
-                                transactionHistory();
+                                transferBalance();
                                 break;
                             case 5:
-                                resetPin();
+                                transactionHistory();
                                 break;
                             case 6:
+                                resetPin();
+                                break;
+                            case 7:
                                 requestDisableATMCard();
                                 break;
                             default:
@@ -330,7 +364,7 @@ int main(){
                     break;
                 }
             case 3:
-                depositWithBankAccount();
+                dipositMoney(accounts, currentAccount, isCardInserted, insertedCard);
                 break;
             case 4:
                 resetPin();
