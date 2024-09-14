@@ -29,7 +29,7 @@ void displayCardOperationsMenu (bool isFirst, char name[256]) {
     if(!isFirst){
         printf("\n");
     }
-    printf("------ Hi, %s ------\n", name);
+    printf("\n------ Hi, %s ------\n", name);
     printf("\n0. Cancel transaction");
     printf("\n1. Balance Query");
     printf("\n2. Balance Withdraw");
@@ -122,6 +122,21 @@ void balanceQuery(struct Account *accountsArr, int totalAccounts, int insertedCa
     }
 }
 
+//this function is for minimize add/deposit balance function
+void addBalance(struct Account *account){
+    double getAmount;
+    printf("Enter amount to deposit: ");
+    scanf("%lf", &getAmount);
+    if(getAmount >= 500){
+        account->balance += getAmount;
+        printf("%.2lf Taka added successfully!!\n", getAmount);
+        printf("New balance is %.2lf taka.!!\n", account->balance);
+
+    }else{
+      printf("Minimum deposit 500tk, try again!!\n");
+    }
+}
+
 //Deposit cash
 void dipositMoney(struct Account *accountsArr, int totalAccounts,bool isCardInserted, int insertedCard ){
     if(!isCardInserted){
@@ -132,17 +147,7 @@ void dipositMoney(struct Account *accountsArr, int totalAccounts,bool isCardInse
         for(int i = 0; i < totalAccounts; i++){
             if(accountsArr[i].accountNumber == getAccount){
                 isAccountExists = true;
-                double getAmount;
-                printf("Enter amount to deposit: ");
-                scanf("%lf", &getAmount);
-                if(getAmount >= 500){
-                    accountsArr[i].balance += getAmount;
-                    printf("%.2lf Taka added successfully!!\n", getAmount);
-                    printf("New balance is %.2lf taka.!!\n", accountsArr[i].balance);
-
-                }else{
-                  printf("Minimum deposit 500tk, try again!!\n");
-                }
+                addBalance(&accountsArr[i]);
                 break;
             }
         }
@@ -153,7 +158,12 @@ void dipositMoney(struct Account *accountsArr, int totalAccounts,bool isCardInse
 
     //deposit with card number
     if(isCardInserted){
-        printf("Card is inserted!!!");
+        for(int i = 0; i < totalAccounts; i++){
+            if(accountsArr[i].cardNumber == insertedCard){
+                addBalance(&accountsArr[i]);
+                break;
+            }
+        }
     }
 }
 
