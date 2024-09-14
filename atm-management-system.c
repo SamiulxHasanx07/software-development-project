@@ -165,18 +165,20 @@ void withdrawBalance(struct Account *accountsArr, int totalAccounts, int inserte
 
     if(withdrawAmount % 500 != 0){
         do{
-            printf("Invalid amount, mount should be 500*NumberOfNot or 1000*NumberOfNote: \n");
+            printf("Invalid amount, mount should be 500*NumberOfNote or 1000*NumberOfNote: \n");
             scanf("%d", &withdrawAmount);
         }while(withdrawAmount % 500 != 0);
     }
 
     for(int i = 0; i<totalAccounts; i++){
         if(accountsArr[i].cardNumber == insertedCard ){
-            if(accountsArr[i].balance>1000){
+            if(accountsArr[i].balance>1000 && withdrawAmount<=(accountsArr[i].balance-500)){
                 double newBalance = accountsArr[i].balance - withdrawAmount;
                 accountsArr[i].balance = newBalance;
                 printf("\nTransaction successful!\n");
                 printf("Your new balance is: %2lf taka\n\n\n", newBalance);
+            }else if(accountsArr[i].balance==500){
+                printf("Balance is low, you can not withdraw money!!\n");
             }else{
                 printf("Insufficient Balance, Current Balance is: %2lf taka\n\n", accountsArr[i].balance);
             }
