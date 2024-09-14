@@ -48,6 +48,7 @@ struct Account {
     char name[256], phone[256], address[500];
     int nidNumber, cardNumber, accountNumber, cardPin;
     double balance;
+    bool isCardBlocked, isCardDisabled;
 };
 
 //generate account number
@@ -245,6 +246,25 @@ void exitProgram(){
     }
 }
 
+//store accounts to txt file
+void saveAccountToFile(struct Account account) {
+    FILE *file = fopen("accounts.txt", "a");
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return;
+    }
+    fprintf(file, "Account Number: %d\n", account.accountNumber);
+    fprintf(file, "Card Number: %d\n", account.cardNumber);
+    fprintf(file, "Name: %s\n", account.name);
+    fprintf(file, "Phone: %s\n", account.phone);
+    fprintf(file, "Address: %s\n", account.address);
+    fprintf(file, "NID Number: %d\n", account.nidNumber);
+    fprintf(file, "Balance: %.2lf\n", account.balance);
+    fprintf(file, "Card PIN: %d\n", account.cardPin);
+    fprintf(file, "--------------------------\n");
+    fclose(file);
+}
+
 int main(){
     displayMenu(true);
     int selectMenu;
@@ -276,6 +296,8 @@ int main(){
                 //old code for backup [manually added data]
                 //account1.accountNumber = rand() % 90000000 + 10000000;
                 //account1.cardNumber = rand() % 9000000 + 1000000;
+                accounts[currentAccount].isCardBlocked = false;
+                accounts[currentAccount].isCardDisabled = false;
 
                 printf("\nEnter your name: ");
                 scanf("%s", accounts[currentAccount].name);
@@ -325,8 +347,12 @@ int main(){
                     printf("Account Number: %d\n", accounts[currentAccount].accountNumber);
                     printf("Balance: %2lf\n", accounts[currentAccount].balance);
 
+                    //save created account in txt file
+                    saveAccountToFile(accounts[currentAccount]);
+
                     //this line is for update current total account number
                     currentAccount++;
+
 
                     break;
                 }else{

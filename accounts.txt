@@ -1,0 +1,18 @@
+Account Number: 10012047
+Card Number: 1008092
+Name: Samiul
+Phone: 330424242
+Address: Rajshahi
+NID Number: 330498898
+Balance: 1000.00
+Card PIN: 1234
+--------------------------
+Account Number: 10030979
+Card Number: 1006426
+Name: User2
+Phone: 0172442
+Address: dhaka,bd
+NID Number: 3304242
+Balance: 20000.00
+Card PIN: 2222
+--------------------------
