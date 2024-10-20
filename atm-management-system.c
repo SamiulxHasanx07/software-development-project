@@ -308,7 +308,6 @@ void adminLogin(){
 
         if(pass == adminPass){
             isAdminLogin=true;
-            printf("login successfull");
             break;
         }else{
             printf("Enter correct password!!");
