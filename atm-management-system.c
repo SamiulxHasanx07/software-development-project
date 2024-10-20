@@ -235,32 +235,43 @@ void requestDisableATMCard(){
 
 //show all saved accounts
 void showAccounts(){
-    FILE *file = fopen("accounts.txt", "r");
+    const char *filename = "accounts.txt";
+    FILE *file = fopen(filename, "r");
     if (file == NULL) {
         printf("Error opening file!\n");
         return;
     }
 
     char line[256];
-    int accountNumber;
-    char name[100];
-    char phone[20];
-    double balance;
+    struct Account account;
 
     printf("\n");
+
     while (fgets(line, sizeof(line), file) != NULL) {
-        if (sscanf(line, "Account Number: %d", &accountNumber) == 1) {
-            printf("Account Number: %d\n", accountNumber);
-        } else if (sscanf(line, "Name: %[^\n]", name) == 1) {
-            printf("Name: %s\n", name);
-        } else if (sscanf(line, "Phone: %[^\n]", phone) == 1) {
-            printf("Phone: %s\n", phone);
-        } else if (sscanf(line, "Balance: %lf", &balance) == 1) {
-            printf("Balance: %.2lf\n", balance);
+        if (sscanf(line, "Account Number: %d", &account.accountNumber) == 1) {
+        } else if (sscanf(line, "Card Number: %d", &account.cardNumber) == 1) {
+            continue;
+        } else if (sscanf(line, "Name: %[^\n]", account.name) == 1) {
+            continue;
+        } else if (sscanf(line, "Phone: %[^\n]", account.phone) == 1) {
+            continue;
+        } else if (sscanf(line, "Address: %[^\n]", account.address) == 1) {
+            continue;
+        } else if (sscanf(line, "NID Number: %d", &account.nidNumber) == 1) {
+            continue;
+        } else if (sscanf(line, "Balance: %lf", &account.balance) == 1) {
+            printf("Account Number: %d\n", account.accountNumber);
+            printf("Card Number: %d\n", account.cardNumber);
+            printf("Name: %s\n", account.name);
+            printf("Phone: %s\n", account.phone);
+            printf("Address: %s\n", account.address);
+            printf("NID Number: %d\n", account.nidNumber);
+            printf("Balance: %.2lf\n", account.balance);
+            printf("--------------------------\n");
         }
     }
-    printf("\n");
 
+    printf("\n");
     fclose(file);
 }
 //show Available balance of all accounts
