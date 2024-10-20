@@ -257,9 +257,9 @@ void showAccounts(){
             printf("Phone: %s\n", phone);
         } else if (sscanf(line, "Balance: %lf", &balance) == 1) {
             printf("Balance: %.2lf\n", balance);
-            printf("--------------------------\n");
         }
     }
+    printf("\n");
 
     fclose(file);
 }
