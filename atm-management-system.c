@@ -24,6 +24,16 @@ void displayMenu (bool isFirst) {
     }
 }
 
+//Display Admin Menu
+void displayAdminMenu () {
+    printf("------Welcome to Admin Dashboard------\n");
+    printf("\n0. Cancel operation");
+    printf("\n1. See registered accounts");
+    printf("\n2. Block User");
+    printf("\n3. Total available balance");
+    printf("\n");
+}
+
 //Display Card Operations Menu
 void displayCardOperationsMenu (bool isFirst, char name[256]) {
     if(!isFirst){
@@ -223,9 +233,79 @@ void requestDisableATMCard(){
     printf("Request disable atm card\n");
 };
 
+//show all saved accounts
+void showAccounts(){
+    FILE *file = fopen("accounts.txt", "r");
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return;
+    }
+
+    char line[256];
+    int accountNumber;
+    char name[100];
+    char phone[20];
+    double balance;
+
+    printf("\n");
+    while (fgets(line, sizeof(line), file) != NULL) {
+        if (sscanf(line, "Account Number: %d", &accountNumber) == 1) {
+            printf("Account Number: %d\n", accountNumber);
+        } else if (sscanf(line, "Name: %[^\n]", name) == 1) {
+            printf("Name: %s\n", name);
+        } else if (sscanf(line, "Phone: %[^\n]", phone) == 1) {
+            printf("Phone: %s\n", phone);
+        } else if (sscanf(line, "Balance: %lf", &balance) == 1) {
+            printf("Balance: %.2lf\n", balance);
+            printf("--------------------------\n");
+        }
+    }
+
+    fclose(file);
+}
+
 //Admin login
 void adminLogin(){
-    printf("Admin login\n");
+    int pass;
+    int loginAttempts = 0;
+    int adminPass = 2222;
+    bool isAdminLogin = false;
+    do{
+        printf("\nEnter admin password: ");
+        scanf("%d", &pass);
+
+        if(pass == adminPass){
+            isAdminLogin=true;
+            printf("login successfull");
+            break;
+        }else{
+            printf("Enter correct password!!");
+            loginAttempts++;
+        }
+    }while(loginAttempts<3);
+
+    if(isAdminLogin){
+        printf("\n");
+        displayAdminMenu();
+        int selectAdminMenu;
+        printf("\nSelect menu: ");
+        scanf("%d", &selectAdminMenu);
+
+        switch (selectAdminMenu){
+            case 0:
+                printf("You are loggedout!");
+                exit(0);
+                break;
+            case 1:
+                showAccounts();
+                break;
+            default:
+                printf("Menu dosen't exists! Please select correct menu!! \n");
+                break;
+        }
+    }
+
+
 };
 
 //exit program
