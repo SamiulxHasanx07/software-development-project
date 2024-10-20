@@ -263,7 +263,7 @@ void showAccounts(){
 
     fclose(file);
 }
-//show all saved accounts
+//show Available balance of all accounts
 void totalAvailableBalance(){
     FILE *file = fopen("accounts.txt", "r");
     if (file == NULL) {
