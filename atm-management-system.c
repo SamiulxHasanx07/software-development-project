@@ -263,7 +263,28 @@ void showAccounts(){
 
     fclose(file);
 }
+//show all saved accounts
+void totalAvailableBalance(){
+    FILE *file = fopen("accounts.txt", "r");
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return;
+    }
+    double balance, totalBalance = 0.0;
+    char line[256];
 
+    printf("\n");
+    while (fgets(line, sizeof(line), file) != NULL) {
+        if (sscanf(line, "Balance: %lf", &balance) == 1) {
+            totalBalance += balance;
+        }
+    }
+
+    printf("Total Available Balance: %.2lf\n", totalBalance);
+    printf("\n");
+
+    fclose(file);
+}
 //Admin login
 void adminLogin(){
     int pass;
@@ -298,6 +319,12 @@ void adminLogin(){
                 break;
             case 1:
                 showAccounts();
+                break;
+            case 2:
+                printf("Block user");
+                break;
+            case 3:
+                totalAvailableBalance();
                 break;
             default:
                 printf("Menu dosen't exists! Please select correct menu!! \n");
